@@ -21,6 +21,14 @@ def extract_possession_info(game, home_team_id, home_team_abbrev, away_team_abbr
         except KeyError:
             return "None"
         
+def save_nfl_game_count(db_conn, num_games):
+    game_count_record = {
+        "id": "nfl_game_count_record",
+        "game_count": num_games
+    }
+    print(game_count_record)
+    db_conn.hset("nfl_game_count", mapping=game_count_record)
+        
 def save_nfl_game_updates(db_conn, game, id):
     print(f"Processing game: {game['shortName']}")
     team_abbrevs = utils.extract_team_abbrev(game['shortName'])
@@ -71,6 +79,8 @@ def fetch_all_live_nfl_games(db_conn):
         print("No NFL games are currently live.")
     else:
         utils.clear_db(db_conn)
+        num_games = len(data['events'])
+        save_nfl_game_count(db_conn, num_games)
         for game in data['events']:
             save_nfl_game_updates(db_conn, game, id)
             id += 1
