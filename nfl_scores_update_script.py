@@ -26,7 +26,6 @@ def save_nfl_game_count(db_conn, num_games):
         "id": "nfl_game_count_record",
         "game_count": num_games
     }
-    print(game_count_record)
     db_conn.hset("nfl_game_count", mapping=game_count_record)
         
 def save_nfl_game_updates(db_conn, game, id):
