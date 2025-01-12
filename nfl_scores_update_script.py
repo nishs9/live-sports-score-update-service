@@ -42,7 +42,7 @@ def save_nfl_game_updates(db_conn, game, id):
     away_record = game['competitions'][0]['competitors'][1]['records'][0]['summary']
     possession_info = extract_possession_info(game, home_team_id, home_team_abbrev, away_team_abbrev)
     display_game_state = None
-    
+
     if game_state == 'pre':
         display_game_state = utils.extract_pst_game_time(game['status']['type']['shortDetail'])
     elif game_state == 'in' and "Quarter" in game['status']['type']['shortDetail']:
@@ -62,6 +62,7 @@ def save_nfl_game_updates(db_conn, game, id):
         "away_score": away_score,
         "home_record": home_record,
         "away_record": away_record,
+	    "game_state": game_state,
         "display_game_state": display_game_state,
         "possession_info": possession_info
     }
