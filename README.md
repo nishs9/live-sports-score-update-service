@@ -1,4 +1,4 @@
-# live-sports-score-update-service
+# LIve Sports Score Update Service
 
 ## Description
 
