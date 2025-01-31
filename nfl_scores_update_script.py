@@ -21,6 +21,16 @@ def extract_possession_info(game, home_team_id, home_team_abbrev, away_team_abbr
         except KeyError:
             return "None"
         
+def resolve_team_records(game):
+    home_record = "N/A"
+    away_record = "N/A"
+
+    if ("AFC" not in game['shortName'] and "NFC" not in game['shortName']):
+        home_record = game['competitions'][0]['competitors'][0]['records'][0]['summary']
+        away_record = game['competitions'][0]['competitors'][1]['records'][0]['summary']
+
+    return home_record, away_record
+        
 def save_nfl_game_count(db_conn, num_games):
     game_count_record = {
         "id": "nfl_game_count_record",
@@ -38,8 +48,7 @@ def save_nfl_game_updates(db_conn, game, id):
     home_score = game['competitions'][0]['competitors'][0]['score']
     away_score = game['competitions'][0]['competitors'][1]['score']
     game_state = game['status']['type']['state']
-    home_record = game['competitions'][0]['competitors'][0]['records'][0]['summary']
-    away_record = game['competitions'][0]['competitors'][1]['records'][0]['summary']
+    home_record, away_record = resolve_team_records(game)
     possession_info = extract_possession_info(game, home_team_id, home_team_abbrev, away_team_abbrev)
     display_game_state = None
 
