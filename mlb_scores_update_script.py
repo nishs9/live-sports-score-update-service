@@ -83,6 +83,7 @@ def fetch_all_live_mlb_games(db_conn):
             id += 1
 
 def main():
+    print("----")
     db_conn = None
     try:
         db_conn = utils.init_redis_conn("mlb")
